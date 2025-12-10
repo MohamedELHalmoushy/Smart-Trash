@@ -1,4 +1,4 @@
-# Smart-Trash
+# Sandy-Trash
 Smart Trash Bin with ATmega32
 
 ### 📖 Overview
@@ -25,7 +25,21 @@ A smart waste management system that classifies waste into **metal** and **plast
 | Motor Driver    | L293 |
 | Programming     | Embedded C (Atmel Studio) |
 | Tools           | Proteus, Multisim, Atmel Studio |
+1️⃣ Our Product
+Visualizing feature correlations to understand relationships in the dataset.  
+![Final Product](trash_1.png)
 
+---
+
+### 2️⃣ Proteus
+Receiver Operating Characteristic curve showing model classification performance.  
+![Proteus](trash_2.png)
+
+---
+
+### 3️⃣ Sand_Trash
+Performance evaluation of the classification model on test data.  
+![Sand_Trash](trash_3.png)
 ### 📹 Demo Video
 [![Smart Trash Bin Demo](results/smart_trash_bin_thumbnail.png)](results/smart_trash_bin_demo.mp4)  
 *Click on the thumbnail to watch the video demo.*
