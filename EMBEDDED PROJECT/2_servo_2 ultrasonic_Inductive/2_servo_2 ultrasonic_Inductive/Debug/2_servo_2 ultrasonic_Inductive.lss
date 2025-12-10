@@ -1,0 +1,1048 @@
+
+2_servo_2 ultrasonic_Inductive.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000566  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000005ba  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000005ba  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000005ec  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000060  00000000  00000000  00000628  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000c93  00000000  00000000  00000688  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000061e  00000000  00000000  0000131b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000005c0  00000000  00000000  00001939  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000a4  00000000  00000000  00001efc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003f0  00000000  00000000  00001fa0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000675  00000000  00000000  00002390  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000050  00000000  00000000  00002a05  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 2c 01 	call	0x258	; 0x258 <main>
+  64:	0c 94 b1 02 	jmp	0x562	; 0x562 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <servo_right>:
+#define OPEN_TIME_MS 1000    // Time to open the trash bin (adjust as needed)
+#define CLOSE_TIME_MS 1000   // Time to close the trash bin (adjust as needed)
+
+// Function to send pulse to SG90 servo to the right (wider angle)
+void servo_right() {
+	for (int i = 0; i < 50; i++) {
+  6c:	20 e0       	ldi	r18, 0x00	; 0
+  6e:	30 e0       	ldi	r19, 0x00	; 0
+  70:	14 c0       	rjmp	.+40     	; 0x9a <servo_right+0x2e>
+		PORTD |= (1 << SERVO_PIN);    // Servo pulse on
+  72:	82 b3       	in	r24, 0x12	; 18
+  74:	80 62       	ori	r24, 0x20	; 32
+  76:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  78:	8e e3       	ldi	r24, 0x3E	; 62
+  7a:	92 e0       	ldi	r25, 0x02	; 2
+  7c:	01 97       	sbiw	r24, 0x01	; 1
+  7e:	f1 f7       	brne	.-4      	; 0x7c <servo_right+0x10>
+  80:	00 c0       	rjmp	.+0      	; 0x82 <servo_right+0x16>
+  82:	00 00       	nop
+		_delay_us(2300);              // 2.3ms pulse width (further right position)
+		PORTD &= ~(1 << SERVO_PIN);   // Servo pulse off
+  84:	82 b3       	in	r24, 0x12	; 18
+  86:	8f 7d       	andi	r24, 0xDF	; 223
+  88:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  8a:	88 e4       	ldi	r24, 0x48	; 72
+  8c:	91 e1       	ldi	r25, 0x11	; 17
+  8e:	01 97       	sbiw	r24, 0x01	; 1
+  90:	f1 f7       	brne	.-4      	; 0x8e <servo_right+0x22>
+  92:	00 c0       	rjmp	.+0      	; 0x94 <servo_right+0x28>
+  94:	00 00       	nop
+#define OPEN_TIME_MS 1000    // Time to open the trash bin (adjust as needed)
+#define CLOSE_TIME_MS 1000   // Time to close the trash bin (adjust as needed)
+
+// Function to send pulse to SG90 servo to the right (wider angle)
+void servo_right() {
+	for (int i = 0; i < 50; i++) {
+  96:	2f 5f       	subi	r18, 0xFF	; 255
+  98:	3f 4f       	sbci	r19, 0xFF	; 255
+  9a:	22 33       	cpi	r18, 0x32	; 50
+  9c:	31 05       	cpc	r19, r1
+  9e:	4c f3       	brlt	.-46     	; 0x72 <servo_right+0x6>
+		PORTD |= (1 << SERVO_PIN);    // Servo pulse on
+		_delay_us(2300);              // 2.3ms pulse width (further right position)
+		PORTD &= ~(1 << SERVO_PIN);   // Servo pulse off
+		_delay_ms(17.7);              // Complete 20ms cycle
+	}
+}
+  a0:	08 95       	ret
+
+000000a2 <servo_left>:
+
+// Function to send pulse to SG90 servo to the left (wider angle)
+void servo_left() {
+	for (int i = 0; i < 50; i++) {
+  a2:	20 e0       	ldi	r18, 0x00	; 0
+  a4:	30 e0       	ldi	r19, 0x00	; 0
+  a6:	12 c0       	rjmp	.+36     	; 0xcc <servo_left+0x2a>
+		PORTD |= (1 << SERVO_PIN);    // Servo pulse on
+  a8:	82 b3       	in	r24, 0x12	; 18
+  aa:	80 62       	ori	r24, 0x20	; 32
+  ac:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  ae:	89 ee       	ldi	r24, 0xE9	; 233
+  b0:	8a 95       	dec	r24
+  b2:	f1 f7       	brne	.-4      	; 0xb0 <servo_left+0xe>
+  b4:	00 00       	nop
+		_delay_us(700);               // 0.7ms pulse width (further left position)
+		PORTD &= ~(1 << SERVO_PIN);   // Servo pulse off
+  b6:	82 b3       	in	r24, 0x12	; 18
+  b8:	8f 7d       	andi	r24, 0xDF	; 223
+  ba:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  bc:	88 ed       	ldi	r24, 0xD8	; 216
+  be:	92 e1       	ldi	r25, 0x12	; 18
+  c0:	01 97       	sbiw	r24, 0x01	; 1
+  c2:	f1 f7       	brne	.-4      	; 0xc0 <servo_left+0x1e>
+  c4:	00 c0       	rjmp	.+0      	; 0xc6 <servo_left+0x24>
+  c6:	00 00       	nop
+	}
+}
+
+// Function to send pulse to SG90 servo to the left (wider angle)
+void servo_left() {
+	for (int i = 0; i < 50; i++) {
+  c8:	2f 5f       	subi	r18, 0xFF	; 255
+  ca:	3f 4f       	sbci	r19, 0xFF	; 255
+  cc:	22 33       	cpi	r18, 0x32	; 50
+  ce:	31 05       	cpc	r19, r1
+  d0:	5c f3       	brlt	.-42     	; 0xa8 <servo_left+0x6>
+		PORTD |= (1 << SERVO_PIN);    // Servo pulse on
+		_delay_us(700);               // 0.7ms pulse width (further left position)
+		PORTD &= ~(1 << SERVO_PIN);   // Servo pulse off
+		_delay_ms(19.3);              // Complete 20ms cycle
+	}
+}
+  d2:	08 95       	ret
+
+000000d4 <servo_center>:
+
+// Function to send pulse to SG90 servo to the center
+void servo_center() {
+	for (int i = 0; i < 50; i++) {
+  d4:	20 e0       	ldi	r18, 0x00	; 0
+  d6:	30 e0       	ldi	r19, 0x00	; 0
+  d8:	14 c0       	rjmp	.+40     	; 0x102 <servo_center+0x2e>
+		PORTD |= (1 << SERVO_PIN);    // Servo pulse on
+  da:	82 b3       	in	r24, 0x12	; 18
+  dc:	80 62       	ori	r24, 0x20	; 32
+  de:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  e0:	86 e7       	ldi	r24, 0x76	; 118
+  e2:	91 e0       	ldi	r25, 0x01	; 1
+  e4:	01 97       	sbiw	r24, 0x01	; 1
+  e6:	f1 f7       	brne	.-4      	; 0xe4 <servo_center+0x10>
+  e8:	00 c0       	rjmp	.+0      	; 0xea <servo_center+0x16>
+  ea:	00 00       	nop
+		_delay_us(1500);              // 1.5ms pulse width (center position)
+		PORTD &= ~(1 << SERVO_PIN);   // Servo pulse off
+  ec:	82 b3       	in	r24, 0x12	; 18
+  ee:	8f 7d       	andi	r24, 0xDF	; 223
+  f0:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  f2:	80 e1       	ldi	r24, 0x10	; 16
+  f4:	92 e1       	ldi	r25, 0x12	; 18
+  f6:	01 97       	sbiw	r24, 0x01	; 1
+  f8:	f1 f7       	brne	.-4      	; 0xf6 <servo_center+0x22>
+  fa:	00 c0       	rjmp	.+0      	; 0xfc <servo_center+0x28>
+  fc:	00 00       	nop
+	}
+}
+
+// Function to send pulse to SG90 servo to the center
+void servo_center() {
+	for (int i = 0; i < 50; i++) {
+  fe:	2f 5f       	subi	r18, 0xFF	; 255
+ 100:	3f 4f       	sbci	r19, 0xFF	; 255
+ 102:	22 33       	cpi	r18, 0x32	; 50
+ 104:	31 05       	cpc	r19, r1
+ 106:	4c f3       	brlt	.-46     	; 0xda <servo_center+0x6>
+		PORTD |= (1 << SERVO_PIN);    // Servo pulse on
+		_delay_us(1500);              // 1.5ms pulse width (center position)
+		PORTD &= ~(1 << SERVO_PIN);   // Servo pulse off
+		_delay_ms(18.5);              // Complete 20ms cycle
+	}
+}
+ 108:	08 95       	ret
+
+0000010a <measure_distance>:
+
+// Function to measure the distance using the Ultrasonic sensor
+uint16_t measure_distance() {
+	// Send a pulse to trigger the ultrasonic sensor
+	PORTD |= (1 << TRIG_PIN);     // TRIG high
+ 10a:	82 b3       	in	r24, 0x12	; 18
+ 10c:	80 64       	ori	r24, 0x40	; 64
+ 10e:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 110:	83 e0       	ldi	r24, 0x03	; 3
+ 112:	8a 95       	dec	r24
+ 114:	f1 f7       	brne	.-4      	; 0x112 <measure_distance+0x8>
+ 116:	00 00       	nop
+	_delay_us(10);                // Wait for 10us
+	PORTD &= ~(1 << TRIG_PIN);    // TRIG low
+ 118:	82 b3       	in	r24, 0x12	; 18
+ 11a:	8f 7b       	andi	r24, 0xBF	; 191
+ 11c:	82 bb       	out	0x12, r24	; 18
+
+	// Wait for ECHO to go high
+	while (!(PIND & (1 << ECHO_PIN))) {}
+ 11e:	80 9b       	sbis	0x10, 0	; 16
+ 120:	fe cf       	rjmp	.-4      	; 0x11e <measure_distance+0x14>
+ 122:	60 e0       	ldi	r22, 0x00	; 0
+ 124:	70 e0       	ldi	r23, 0x00	; 0
+ 126:	03 c0       	rjmp	.+6      	; 0x12e <measure_distance+0x24>
+
+	// Start the timer for ECHO high pulse
+	uint16_t start_time = 0;
+	while (PIND & (1 << ECHO_PIN)) {
+		start_time++;   // Increment counter while ECHO is high
+ 128:	6f 5f       	subi	r22, 0xFF	; 255
+ 12a:	7f 4f       	sbci	r23, 0xFF	; 255
+ 12c:	00 00       	nop
+	// Wait for ECHO to go high
+	while (!(PIND & (1 << ECHO_PIN))) {}
+
+	// Start the timer for ECHO high pulse
+	uint16_t start_time = 0;
+	while (PIND & (1 << ECHO_PIN)) {
+ 12e:	80 99       	sbic	0x10, 0	; 16
+ 130:	fb cf       	rjmp	.-10     	; 0x128 <measure_distance+0x1e>
+		_delay_us(1);   // Delay 1 microsecond for accurate time
+	}
+	
+	// The time is the duration of ECHO high signal in microseconds
+	// Calculate distance in centimeters (speed of sound = 343 m/s or 0.0343 cm/µs)
+	uint16_t distance = start_time * 0.0343 / 2;   // Divide by 2 for round trip
+ 132:	80 e0       	ldi	r24, 0x00	; 0
+ 134:	90 e0       	ldi	r25, 0x00	; 0
+ 136:	0e 94 b6 01 	call	0x36c	; 0x36c <__floatunsisf>
+ 13a:	28 e2       	ldi	r18, 0x28	; 40
+ 13c:	3e e7       	ldi	r19, 0x7E	; 126
+ 13e:	4c e0       	ldi	r20, 0x0C	; 12
+ 140:	5d e3       	ldi	r21, 0x3D	; 61
+ 142:	0e 94 1c 02 	call	0x438	; 0x438 <__mulsf3>
+ 146:	20 e0       	ldi	r18, 0x00	; 0
+ 148:	30 e0       	ldi	r19, 0x00	; 0
+ 14a:	40 e0       	ldi	r20, 0x00	; 0
+ 14c:	5f e3       	ldi	r21, 0x3F	; 63
+ 14e:	0e 94 1c 02 	call	0x438	; 0x438 <__mulsf3>
+ 152:	0e 94 87 01 	call	0x30e	; 0x30e <__fixunssfsi>
+
+	return distance;  // Return the distance in centimeters
+}
+ 156:	cb 01       	movw	r24, r22
+ 158:	08 95       	ret
+
+0000015a <servo2_stop>:
+
+// ---- MODIFIED CODE FOR MG995 FULL METAL CONTINUOUS ROTATION SERVO ----
+
+// Function to stop the MG995 Full Metal continuous rotation servo
+void servo2_stop() {
+	for (int i = 0; i < 50; i++) {
+ 15a:	20 e0       	ldi	r18, 0x00	; 0
+ 15c:	30 e0       	ldi	r19, 0x00	; 0
+ 15e:	14 c0       	rjmp	.+40     	; 0x188 <servo2_stop+0x2e>
+		PORTD |= (1 << SERVO2_PIN);
+ 160:	82 b3       	in	r24, 0x12	; 18
+ 162:	88 60       	ori	r24, 0x08	; 8
+ 164:	82 bb       	out	0x12, r24	; 18
+ 166:	86 e7       	ldi	r24, 0x76	; 118
+ 168:	91 e0       	ldi	r25, 0x01	; 1
+ 16a:	01 97       	sbiw	r24, 0x01	; 1
+ 16c:	f1 f7       	brne	.-4      	; 0x16a <servo2_stop+0x10>
+ 16e:	00 c0       	rjmp	.+0      	; 0x170 <servo2_stop+0x16>
+ 170:	00 00       	nop
+		_delay_us(1500);           // 1.5ms pulse width (stop position for continuous rotation)
+		PORTD &= ~(1 << SERVO2_PIN);
+ 172:	82 b3       	in	r24, 0x12	; 18
+ 174:	87 7f       	andi	r24, 0xF7	; 247
+ 176:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 178:	80 e1       	ldi	r24, 0x10	; 16
+ 17a:	92 e1       	ldi	r25, 0x12	; 18
+ 17c:	01 97       	sbiw	r24, 0x01	; 1
+ 17e:	f1 f7       	brne	.-4      	; 0x17c <servo2_stop+0x22>
+ 180:	00 c0       	rjmp	.+0      	; 0x182 <servo2_stop+0x28>
+ 182:	00 00       	nop
+
+// ---- MODIFIED CODE FOR MG995 FULL METAL CONTINUOUS ROTATION SERVO ----
+
+// Function to stop the MG995 Full Metal continuous rotation servo
+void servo2_stop() {
+	for (int i = 0; i < 50; i++) {
+ 184:	2f 5f       	subi	r18, 0xFF	; 255
+ 186:	3f 4f       	sbci	r19, 0xFF	; 255
+ 188:	22 33       	cpi	r18, 0x32	; 50
+ 18a:	31 05       	cpc	r19, r1
+ 18c:	4c f3       	brlt	.-46     	; 0x160 <servo2_stop+0x6>
+		PORTD |= (1 << SERVO2_PIN);
+		_delay_us(1500);           // 1.5ms pulse width (stop position for continuous rotation)
+		PORTD &= ~(1 << SERVO2_PIN);
+		_delay_ms(18.5);           // Complete 20ms cycle
+	}
+}
+ 18e:	08 95       	ret
+
+00000190 <servo2_open_trash>:
+
+// Function to rotate MG995 Full Metal servo clockwise (to open the trash bin)
+void servo2_open_trash() {
+	// Rotate clockwise at moderate speed for a set time
+	uint16_t start_time = 0;
+ 190:	20 e0       	ldi	r18, 0x00	; 0
+ 192:	30 e0       	ldi	r19, 0x00	; 0
+	while (start_time < OPEN_TIME_MS) {
+ 194:	14 c0       	rjmp	.+40     	; 0x1be <servo2_open_trash+0x2e>
+		PORTD |= (1 << SERVO2_PIN);
+ 196:	82 b3       	in	r24, 0x12	; 18
+ 198:	88 60       	ori	r24, 0x08	; 8
+ 19a:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 19c:	88 ea       	ldi	r24, 0xA8	; 168
+ 19e:	91 e0       	ldi	r25, 0x01	; 1
+ 1a0:	01 97       	sbiw	r24, 0x01	; 1
+ 1a2:	f1 f7       	brne	.-4      	; 0x1a0 <servo2_open_trash+0x10>
+ 1a4:	00 c0       	rjmp	.+0      	; 0x1a6 <servo2_open_trash+0x16>
+ 1a6:	00 00       	nop
+		_delay_us(1700);           // >1.5ms pulse width (clockwise rotation)
+		PORTD &= ~(1 << SERVO2_PIN);
+ 1a8:	82 b3       	in	r24, 0x12	; 18
+ 1aa:	87 7f       	andi	r24, 0xF7	; 247
+ 1ac:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 1ae:	8e ed       	ldi	r24, 0xDE	; 222
+ 1b0:	91 e1       	ldi	r25, 0x11	; 17
+ 1b2:	01 97       	sbiw	r24, 0x01	; 1
+ 1b4:	f1 f7       	brne	.-4      	; 0x1b2 <servo2_open_trash+0x22>
+ 1b6:	00 c0       	rjmp	.+0      	; 0x1b8 <servo2_open_trash+0x28>
+ 1b8:	00 00       	nop
+		_delay_ms(18.3);           // Complete 20ms cycle
+		start_time += 20;          // Increment by cycle time
+ 1ba:	2c 5e       	subi	r18, 0xEC	; 236
+ 1bc:	3f 4f       	sbci	r19, 0xFF	; 255
+
+// Function to rotate MG995 Full Metal servo clockwise (to open the trash bin)
+void servo2_open_trash() {
+	// Rotate clockwise at moderate speed for a set time
+	uint16_t start_time = 0;
+	while (start_time < OPEN_TIME_MS) {
+ 1be:	28 3e       	cpi	r18, 0xE8	; 232
+ 1c0:	93 e0       	ldi	r25, 0x03	; 3
+ 1c2:	39 07       	cpc	r19, r25
+ 1c4:	40 f3       	brcs	.-48     	; 0x196 <servo2_open_trash+0x6>
+		_delay_ms(18.3);           // Complete 20ms cycle
+		start_time += 20;          // Increment by cycle time
+	}
+	
+	// Stop the servo after reaching the desired position
+	servo2_stop();
+ 1c6:	0e 94 ad 00 	call	0x15a	; 0x15a <servo2_stop>
+ 1ca:	08 95       	ret
+
+000001cc <servo2_close_trash>:
+}
+
+// Function to rotate MG995 Full Metal servo counter-clockwise (to close the trash bin)
+void servo2_close_trash() {
+	// Rotate counter-clockwise at moderate speed for a set time
+	uint16_t start_time = 0;
+ 1cc:	20 e0       	ldi	r18, 0x00	; 0
+ 1ce:	30 e0       	ldi	r19, 0x00	; 0
+	while (start_time < CLOSE_TIME_MS) {
+ 1d0:	14 c0       	rjmp	.+40     	; 0x1fa <servo2_close_trash+0x2e>
+		PORTD |= (1 << SERVO2_PIN);
+ 1d2:	82 b3       	in	r24, 0x12	; 18
+ 1d4:	88 60       	ori	r24, 0x08	; 8
+ 1d6:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 1d8:	84 e4       	ldi	r24, 0x44	; 68
+ 1da:	91 e0       	ldi	r25, 0x01	; 1
+ 1dc:	01 97       	sbiw	r24, 0x01	; 1
+ 1de:	f1 f7       	brne	.-4      	; 0x1dc <servo2_close_trash+0x10>
+ 1e0:	00 c0       	rjmp	.+0      	; 0x1e2 <servo2_close_trash+0x16>
+ 1e2:	00 00       	nop
+		_delay_us(1300);           // <1.5ms pulse width (counter-clockwise rotation)
+		PORTD &= ~(1 << SERVO2_PIN);
+ 1e4:	82 b3       	in	r24, 0x12	; 18
+ 1e6:	87 7f       	andi	r24, 0xF7	; 247
+ 1e8:	82 bb       	out	0x12, r24	; 18
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 1ea:	82 e4       	ldi	r24, 0x42	; 66
+ 1ec:	92 e1       	ldi	r25, 0x12	; 18
+ 1ee:	01 97       	sbiw	r24, 0x01	; 1
+ 1f0:	f1 f7       	brne	.-4      	; 0x1ee <servo2_close_trash+0x22>
+ 1f2:	00 c0       	rjmp	.+0      	; 0x1f4 <servo2_close_trash+0x28>
+ 1f4:	00 00       	nop
+		_delay_ms(18.7);           // Complete 20ms cycle
+		start_time += 20;          // Increment by cycle time
+ 1f6:	2c 5e       	subi	r18, 0xEC	; 236
+ 1f8:	3f 4f       	sbci	r19, 0xFF	; 255
+
+// Function to rotate MG995 Full Metal servo counter-clockwise (to close the trash bin)
+void servo2_close_trash() {
+	// Rotate counter-clockwise at moderate speed for a set time
+	uint16_t start_time = 0;
+	while (start_time < CLOSE_TIME_MS) {
+ 1fa:	28 3e       	cpi	r18, 0xE8	; 232
+ 1fc:	93 e0       	ldi	r25, 0x03	; 3
+ 1fe:	39 07       	cpc	r19, r25
+ 200:	40 f3       	brcs	.-48     	; 0x1d2 <servo2_close_trash+0x6>
+		_delay_ms(18.7);           // Complete 20ms cycle
+		start_time += 20;          // Increment by cycle time
+	}
+	
+	// Stop the servo after reaching the desired position
+	servo2_stop();
+ 202:	0e 94 ad 00 	call	0x15a	; 0x15a <servo2_stop>
+ 206:	08 95       	ret
+
+00000208 <measure_distance2>:
+
+// ------------------------
+// New Ultrasonic Measurement
+uint16_t measure_distance2() {
+	// Send pulse
+	PORTC |= (1 << TRIG2_PIN);
+ 208:	85 b3       	in	r24, 0x15	; 21
+ 20a:	81 60       	ori	r24, 0x01	; 1
+ 20c:	85 bb       	out	0x15, r24	; 21
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 20e:	83 e0       	ldi	r24, 0x03	; 3
+ 210:	8a 95       	dec	r24
+ 212:	f1 f7       	brne	.-4      	; 0x210 <measure_distance2+0x8>
+ 214:	00 00       	nop
+	_delay_us(10);
+	PORTC &= ~(1 << TRIG2_PIN);
+ 216:	85 b3       	in	r24, 0x15	; 21
+ 218:	8e 7f       	andi	r24, 0xFE	; 254
+ 21a:	85 bb       	out	0x15, r24	; 21
+
+	// Wait for echo high
+	while (!(PINC & (1 << ECHO2_PIN))) {}
+ 21c:	99 9b       	sbis	0x13, 1	; 19
+ 21e:	fe cf       	rjmp	.-4      	; 0x21c <measure_distance2+0x14>
+ 220:	60 e0       	ldi	r22, 0x00	; 0
+ 222:	70 e0       	ldi	r23, 0x00	; 0
+ 224:	03 c0       	rjmp	.+6      	; 0x22c <measure_distance2+0x24>
+
+	uint16_t duration = 0;
+	while (PINC & (1 << ECHO2_PIN)) {
+		duration++;
+ 226:	6f 5f       	subi	r22, 0xFF	; 255
+ 228:	7f 4f       	sbci	r23, 0xFF	; 255
+ 22a:	00 00       	nop
+
+	// Wait for echo high
+	while (!(PINC & (1 << ECHO2_PIN))) {}
+
+	uint16_t duration = 0;
+	while (PINC & (1 << ECHO2_PIN)) {
+ 22c:	99 99       	sbic	0x13, 1	; 19
+ 22e:	fb cf       	rjmp	.-10     	; 0x226 <measure_distance2+0x1e>
+		duration++;
+		_delay_us(1);
+	}
+
+	uint16_t distance = duration * 0.0343 / 2;
+ 230:	80 e0       	ldi	r24, 0x00	; 0
+ 232:	90 e0       	ldi	r25, 0x00	; 0
+ 234:	0e 94 b6 01 	call	0x36c	; 0x36c <__floatunsisf>
+ 238:	28 e2       	ldi	r18, 0x28	; 40
+ 23a:	3e e7       	ldi	r19, 0x7E	; 126
+ 23c:	4c e0       	ldi	r20, 0x0C	; 12
+ 23e:	5d e3       	ldi	r21, 0x3D	; 61
+ 240:	0e 94 1c 02 	call	0x438	; 0x438 <__mulsf3>
+ 244:	20 e0       	ldi	r18, 0x00	; 0
+ 246:	30 e0       	ldi	r19, 0x00	; 0
+ 248:	40 e0       	ldi	r20, 0x00	; 0
+ 24a:	5f e3       	ldi	r21, 0x3F	; 63
+ 24c:	0e 94 1c 02 	call	0x438	; 0x438 <__mulsf3>
+ 250:	0e 94 87 01 	call	0x30e	; 0x30e <__fixunssfsi>
+	return distance;
+}
+ 254:	cb 01       	movw	r24, r22
+ 256:	08 95       	ret
+
+00000258 <main>:
+
+int main(void) {
+	// Set Servo pin as output
+	DDRD |= (1 << SERVO_PIN);
+ 258:	81 b3       	in	r24, 0x11	; 17
+ 25a:	80 62       	ori	r24, 0x20	; 32
+ 25c:	81 bb       	out	0x11, r24	; 17
+	
+	// Set Inductive Proximity Sensor pin as input
+	DDRD &= ~(1 << METAL_SENSOR_PIN);
+ 25e:	81 b3       	in	r24, 0x11	; 17
+ 260:	8b 7f       	andi	r24, 0xFB	; 251
+ 262:	81 bb       	out	0x11, r24	; 17
+	
+	// Set Ultrasonic TRIG and ECHO pins
+	DDRD |= (1 << TRIG_PIN);    // TRIG as output
+ 264:	81 b3       	in	r24, 0x11	; 17
+ 266:	80 64       	ori	r24, 0x40	; 64
+ 268:	81 bb       	out	0x11, r24	; 17
+	DDRD &= ~(1 << ECHO_PIN);   // ECHO as input
+ 26a:	81 b3       	in	r24, 0x11	; 17
+ 26c:	8e 7f       	andi	r24, 0xFE	; 254
+ 26e:	81 bb       	out	0x11, r24	; 17
+	
+	// Enable pull-up resistor on the sensor pin (optional but can help if sensor is not giving enough signal)
+	PORTD |= (1 << METAL_SENSOR_PIN);
+ 270:	82 b3       	in	r24, 0x12	; 18
+ 272:	84 60       	ori	r24, 0x04	; 4
+ 274:	82 bb       	out	0x12, r24	; 18
+	
+	// New Servo and Ultrasonic Configs
+	DDRD |= (1 << SERVO2_PIN);       // Output for second servo
+ 276:	81 b3       	in	r24, 0x11	; 17
+ 278:	88 60       	ori	r24, 0x08	; 8
+ 27a:	81 bb       	out	0x11, r24	; 17
+	DDRC |= (1 << TRIG2_PIN);        // Output for TRIG2 (A0)
+ 27c:	84 b3       	in	r24, 0x14	; 20
+ 27e:	81 60       	ori	r24, 0x01	; 1
+ 280:	84 bb       	out	0x14, r24	; 20
+	DDRC &= ~(1 << ECHO2_PIN);       // Input for ECHO2 (A1)
+ 282:	84 b3       	in	r24, 0x14	; 20
+ 284:	8d 7f       	andi	r24, 0xFD	; 253
+ 286:	84 bb       	out	0x14, r24	; 20
+
+	// Make sure MG995 Full Metal servo is in closed position at start
+	servo2_close_trash();
+ 288:	0e 94 e6 00 	call	0x1cc	; 0x1cc <servo2_close_trash>
+
+	// Variable to track if trash bin is open
+	uint8_t trash_is_open = 0;
+ 28c:	c0 e0       	ldi	r28, 0x00	; 0
+
+	while (1) {
+		// ---------- First part: First servo (SG90) ----------
+		uint16_t distance1 = measure_distance();  // From first ultrasonic
+ 28e:	0e 94 85 00 	call	0x10a	; 0x10a <measure_distance>
+
+		if (distance1 < 3) {
+ 292:	03 97       	sbiw	r24, 0x03	; 3
+ 294:	30 f5       	brcc	.+76     	; 0x2e2 <main+0x8a>
+			if (PIND & (1 << METAL_SENSOR_PIN)) {
+ 296:	82 9b       	sbis	0x10, 2	; 16
+ 298:	0e c0       	rjmp	.+28     	; 0x2b6 <main+0x5e>
+				servo_right();
+ 29a:	0e 94 36 00 	call	0x6c	; 0x6c <servo_right>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 29e:	2f e9       	ldi	r18, 0x9F	; 159
+ 2a0:	86 e8       	ldi	r24, 0x86	; 134
+ 2a2:	91 e0       	ldi	r25, 0x01	; 1
+ 2a4:	21 50       	subi	r18, 0x01	; 1
+ 2a6:	80 40       	sbci	r24, 0x00	; 0
+ 2a8:	90 40       	sbci	r25, 0x00	; 0
+ 2aa:	e1 f7       	brne	.-8      	; 0x2a4 <main+0x4c>
+ 2ac:	00 c0       	rjmp	.+0      	; 0x2ae <main+0x56>
+ 2ae:	00 00       	nop
+				_delay_ms(500);
+				servo_center();
+ 2b0:	0e 94 6a 00 	call	0xd4	; 0xd4 <servo_center>
+ 2b4:	0d c0       	rjmp	.+26     	; 0x2d0 <main+0x78>
+				} else {
+				servo_left();
+ 2b6:	0e 94 51 00 	call	0xa2	; 0xa2 <servo_left>
+ 2ba:	2f e9       	ldi	r18, 0x9F	; 159
+ 2bc:	86 e8       	ldi	r24, 0x86	; 134
+ 2be:	91 e0       	ldi	r25, 0x01	; 1
+ 2c0:	21 50       	subi	r18, 0x01	; 1
+ 2c2:	80 40       	sbci	r24, 0x00	; 0
+ 2c4:	90 40       	sbci	r25, 0x00	; 0
+ 2c6:	e1 f7       	brne	.-8      	; 0x2c0 <main+0x68>
+ 2c8:	00 c0       	rjmp	.+0      	; 0x2ca <main+0x72>
+ 2ca:	00 00       	nop
+				_delay_ms(500);
+				servo_center();
+ 2cc:	0e 94 6a 00 	call	0xd4	; 0xd4 <servo_center>
+ 2d0:	2f e9       	ldi	r18, 0x9F	; 159
+ 2d2:	86 e8       	ldi	r24, 0x86	; 134
+ 2d4:	91 e0       	ldi	r25, 0x01	; 1
+ 2d6:	21 50       	subi	r18, 0x01	; 1
+ 2d8:	80 40       	sbci	r24, 0x00	; 0
+ 2da:	90 40       	sbci	r25, 0x00	; 0
+ 2dc:	e1 f7       	brne	.-8      	; 0x2d6 <main+0x7e>
+ 2de:	00 c0       	rjmp	.+0      	; 0x2e0 <main+0x88>
+ 2e0:	00 00       	nop
+			}
+			_delay_ms(500);  // Small delay before re-measuring
+		}
+
+		// ---------- Second part: Second servo (MG995 Full Metal) ----------
+		uint16_t distance2 = measure_distance2();  // From second ultrasonic
+ 2e2:	0e 94 04 01 	call	0x208	; 0x208 <measure_distance2>
+
+		if (distance2 < 5) {
+ 2e6:	05 97       	sbiw	r24, 0x05	; 5
+ 2e8:	30 f4       	brcc	.+12     	; 0x2f6 <main+0x9e>
+			if (!trash_is_open) {
+ 2ea:	c1 11       	cpse	r28, r1
+ 2ec:	09 c0       	rjmp	.+18     	; 0x300 <main+0xa8>
+				servo2_open_trash();
+ 2ee:	0e 94 c8 00 	call	0x190	; 0x190 <servo2_open_trash>
+				trash_is_open = 1;
+ 2f2:	c1 e0       	ldi	r28, 0x01	; 1
+ 2f4:	05 c0       	rjmp	.+10     	; 0x300 <main+0xa8>
+			}
+			} else {
+			if (trash_is_open) {
+ 2f6:	cc 23       	and	r28, r28
+ 2f8:	19 f0       	breq	.+6      	; 0x300 <main+0xa8>
+				servo2_close_trash();
+ 2fa:	0e 94 e6 00 	call	0x1cc	; 0x1cc <servo2_close_trash>
+				trash_is_open = 0;
+ 2fe:	c0 e0       	ldi	r28, 0x00	; 0
+ 300:	87 ea       	ldi	r24, 0xA7	; 167
+ 302:	91 e6       	ldi	r25, 0x61	; 97
+ 304:	01 97       	sbiw	r24, 0x01	; 1
+ 306:	f1 f7       	brne	.-4      	; 0x304 <main+0xac>
+ 308:	00 c0       	rjmp	.+0      	; 0x30a <main+0xb2>
+ 30a:	00 00       	nop
+ 30c:	c0 cf       	rjmp	.-128    	; 0x28e <main+0x36>
+
+0000030e <__fixunssfsi>:
+ 30e:	0e 94 fb 01 	call	0x3f6	; 0x3f6 <__fp_splitA>
+ 312:	88 f0       	brcs	.+34     	; 0x336 <__fixunssfsi+0x28>
+ 314:	9f 57       	subi	r25, 0x7F	; 127
+ 316:	98 f0       	brcs	.+38     	; 0x33e <__fixunssfsi+0x30>
+ 318:	b9 2f       	mov	r27, r25
+ 31a:	99 27       	eor	r25, r25
+ 31c:	b7 51       	subi	r27, 0x17	; 23
+ 31e:	b0 f0       	brcs	.+44     	; 0x34c <__fixunssfsi+0x3e>
+ 320:	e1 f0       	breq	.+56     	; 0x35a <__fixunssfsi+0x4c>
+ 322:	66 0f       	add	r22, r22
+ 324:	77 1f       	adc	r23, r23
+ 326:	88 1f       	adc	r24, r24
+ 328:	99 1f       	adc	r25, r25
+ 32a:	1a f0       	brmi	.+6      	; 0x332 <__fixunssfsi+0x24>
+ 32c:	ba 95       	dec	r27
+ 32e:	c9 f7       	brne	.-14     	; 0x322 <__fixunssfsi+0x14>
+ 330:	14 c0       	rjmp	.+40     	; 0x35a <__fixunssfsi+0x4c>
+ 332:	b1 30       	cpi	r27, 0x01	; 1
+ 334:	91 f0       	breq	.+36     	; 0x35a <__fixunssfsi+0x4c>
+ 336:	0e 94 15 02 	call	0x42a	; 0x42a <__fp_zero>
+ 33a:	b1 e0       	ldi	r27, 0x01	; 1
+ 33c:	08 95       	ret
+ 33e:	0c 94 15 02 	jmp	0x42a	; 0x42a <__fp_zero>
+ 342:	67 2f       	mov	r22, r23
+ 344:	78 2f       	mov	r23, r24
+ 346:	88 27       	eor	r24, r24
+ 348:	b8 5f       	subi	r27, 0xF8	; 248
+ 34a:	39 f0       	breq	.+14     	; 0x35a <__fixunssfsi+0x4c>
+ 34c:	b9 3f       	cpi	r27, 0xF9	; 249
+ 34e:	cc f3       	brlt	.-14     	; 0x342 <__fixunssfsi+0x34>
+ 350:	86 95       	lsr	r24
+ 352:	77 95       	ror	r23
+ 354:	67 95       	ror	r22
+ 356:	b3 95       	inc	r27
+ 358:	d9 f7       	brne	.-10     	; 0x350 <__fixunssfsi+0x42>
+ 35a:	3e f4       	brtc	.+14     	; 0x36a <__fixunssfsi+0x5c>
+ 35c:	90 95       	com	r25
+ 35e:	80 95       	com	r24
+ 360:	70 95       	com	r23
+ 362:	61 95       	neg	r22
+ 364:	7f 4f       	sbci	r23, 0xFF	; 255
+ 366:	8f 4f       	sbci	r24, 0xFF	; 255
+ 368:	9f 4f       	sbci	r25, 0xFF	; 255
+ 36a:	08 95       	ret
+
+0000036c <__floatunsisf>:
+ 36c:	e8 94       	clt
+ 36e:	09 c0       	rjmp	.+18     	; 0x382 <__floatsisf+0x12>
+
+00000370 <__floatsisf>:
+ 370:	97 fb       	bst	r25, 7
+ 372:	3e f4       	brtc	.+14     	; 0x382 <__floatsisf+0x12>
+ 374:	90 95       	com	r25
+ 376:	80 95       	com	r24
+ 378:	70 95       	com	r23
+ 37a:	61 95       	neg	r22
+ 37c:	7f 4f       	sbci	r23, 0xFF	; 255
+ 37e:	8f 4f       	sbci	r24, 0xFF	; 255
+ 380:	9f 4f       	sbci	r25, 0xFF	; 255
+ 382:	99 23       	and	r25, r25
+ 384:	a9 f0       	breq	.+42     	; 0x3b0 <__floatsisf+0x40>
+ 386:	f9 2f       	mov	r31, r25
+ 388:	96 e9       	ldi	r25, 0x96	; 150
+ 38a:	bb 27       	eor	r27, r27
+ 38c:	93 95       	inc	r25
+ 38e:	f6 95       	lsr	r31
+ 390:	87 95       	ror	r24
+ 392:	77 95       	ror	r23
+ 394:	67 95       	ror	r22
+ 396:	b7 95       	ror	r27
+ 398:	f1 11       	cpse	r31, r1
+ 39a:	f8 cf       	rjmp	.-16     	; 0x38c <__floatsisf+0x1c>
+ 39c:	fa f4       	brpl	.+62     	; 0x3dc <__floatsisf+0x6c>
+ 39e:	bb 0f       	add	r27, r27
+ 3a0:	11 f4       	brne	.+4      	; 0x3a6 <__floatsisf+0x36>
+ 3a2:	60 ff       	sbrs	r22, 0
+ 3a4:	1b c0       	rjmp	.+54     	; 0x3dc <__floatsisf+0x6c>
+ 3a6:	6f 5f       	subi	r22, 0xFF	; 255
+ 3a8:	7f 4f       	sbci	r23, 0xFF	; 255
+ 3aa:	8f 4f       	sbci	r24, 0xFF	; 255
+ 3ac:	9f 4f       	sbci	r25, 0xFF	; 255
+ 3ae:	16 c0       	rjmp	.+44     	; 0x3dc <__floatsisf+0x6c>
+ 3b0:	88 23       	and	r24, r24
+ 3b2:	11 f0       	breq	.+4      	; 0x3b8 <__floatsisf+0x48>
+ 3b4:	96 e9       	ldi	r25, 0x96	; 150
+ 3b6:	11 c0       	rjmp	.+34     	; 0x3da <__floatsisf+0x6a>
+ 3b8:	77 23       	and	r23, r23
+ 3ba:	21 f0       	breq	.+8      	; 0x3c4 <__floatsisf+0x54>
+ 3bc:	9e e8       	ldi	r25, 0x8E	; 142
+ 3be:	87 2f       	mov	r24, r23
+ 3c0:	76 2f       	mov	r23, r22
+ 3c2:	05 c0       	rjmp	.+10     	; 0x3ce <__floatsisf+0x5e>
+ 3c4:	66 23       	and	r22, r22
+ 3c6:	71 f0       	breq	.+28     	; 0x3e4 <__floatsisf+0x74>
+ 3c8:	96 e8       	ldi	r25, 0x86	; 134
+ 3ca:	86 2f       	mov	r24, r22
+ 3cc:	70 e0       	ldi	r23, 0x00	; 0
+ 3ce:	60 e0       	ldi	r22, 0x00	; 0
+ 3d0:	2a f0       	brmi	.+10     	; 0x3dc <__floatsisf+0x6c>
+ 3d2:	9a 95       	dec	r25
+ 3d4:	66 0f       	add	r22, r22
+ 3d6:	77 1f       	adc	r23, r23
+ 3d8:	88 1f       	adc	r24, r24
+ 3da:	da f7       	brpl	.-10     	; 0x3d2 <__floatsisf+0x62>
+ 3dc:	88 0f       	add	r24, r24
+ 3de:	96 95       	lsr	r25
+ 3e0:	87 95       	ror	r24
+ 3e2:	97 f9       	bld	r25, 7
+ 3e4:	08 95       	ret
+
+000003e6 <__fp_split3>:
+ 3e6:	57 fd       	sbrc	r21, 7
+ 3e8:	90 58       	subi	r25, 0x80	; 128
+ 3ea:	44 0f       	add	r20, r20
+ 3ec:	55 1f       	adc	r21, r21
+ 3ee:	59 f0       	breq	.+22     	; 0x406 <__EEPROM_REGION_LENGTH__+0x6>
+ 3f0:	5f 3f       	cpi	r21, 0xFF	; 255
+ 3f2:	71 f0       	breq	.+28     	; 0x410 <__EEPROM_REGION_LENGTH__+0x10>
+ 3f4:	47 95       	ror	r20
+
+000003f6 <__fp_splitA>:
+ 3f6:	88 0f       	add	r24, r24
+ 3f8:	97 fb       	bst	r25, 7
+ 3fa:	99 1f       	adc	r25, r25
+ 3fc:	61 f0       	breq	.+24     	; 0x416 <__EEPROM_REGION_LENGTH__+0x16>
+ 3fe:	9f 3f       	cpi	r25, 0xFF	; 255
+ 400:	79 f0       	breq	.+30     	; 0x420 <__EEPROM_REGION_LENGTH__+0x20>
+ 402:	87 95       	ror	r24
+ 404:	08 95       	ret
+ 406:	12 16       	cp	r1, r18
+ 408:	13 06       	cpc	r1, r19
+ 40a:	14 06       	cpc	r1, r20
+ 40c:	55 1f       	adc	r21, r21
+ 40e:	f2 cf       	rjmp	.-28     	; 0x3f4 <__fp_split3+0xe>
+ 410:	46 95       	lsr	r20
+ 412:	f1 df       	rcall	.-30     	; 0x3f6 <__fp_splitA>
+ 414:	08 c0       	rjmp	.+16     	; 0x426 <__EEPROM_REGION_LENGTH__+0x26>
+ 416:	16 16       	cp	r1, r22
+ 418:	17 06       	cpc	r1, r23
+ 41a:	18 06       	cpc	r1, r24
+ 41c:	99 1f       	adc	r25, r25
+ 41e:	f1 cf       	rjmp	.-30     	; 0x402 <__EEPROM_REGION_LENGTH__+0x2>
+ 420:	86 95       	lsr	r24
+ 422:	71 05       	cpc	r23, r1
+ 424:	61 05       	cpc	r22, r1
+ 426:	08 94       	sec
+ 428:	08 95       	ret
+
+0000042a <__fp_zero>:
+ 42a:	e8 94       	clt
+
+0000042c <__fp_szero>:
+ 42c:	bb 27       	eor	r27, r27
+ 42e:	66 27       	eor	r22, r22
+ 430:	77 27       	eor	r23, r23
+ 432:	cb 01       	movw	r24, r22
+ 434:	97 f9       	bld	r25, 7
+ 436:	08 95       	ret
+
+00000438 <__mulsf3>:
+ 438:	0e 94 2f 02 	call	0x45e	; 0x45e <__mulsf3x>
+ 43c:	0c 94 a0 02 	jmp	0x540	; 0x540 <__fp_round>
+ 440:	0e 94 92 02 	call	0x524	; 0x524 <__fp_pscA>
+ 444:	38 f0       	brcs	.+14     	; 0x454 <__mulsf3+0x1c>
+ 446:	0e 94 99 02 	call	0x532	; 0x532 <__fp_pscB>
+ 44a:	20 f0       	brcs	.+8      	; 0x454 <__mulsf3+0x1c>
+ 44c:	95 23       	and	r25, r21
+ 44e:	11 f0       	breq	.+4      	; 0x454 <__mulsf3+0x1c>
+ 450:	0c 94 89 02 	jmp	0x512	; 0x512 <__fp_inf>
+ 454:	0c 94 8f 02 	jmp	0x51e	; 0x51e <__fp_nan>
+ 458:	11 24       	eor	r1, r1
+ 45a:	0c 94 16 02 	jmp	0x42c	; 0x42c <__fp_szero>
+
+0000045e <__mulsf3x>:
+ 45e:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <__fp_split3>
+ 462:	70 f3       	brcs	.-36     	; 0x440 <__mulsf3+0x8>
+
+00000464 <__mulsf3_pse>:
+ 464:	95 9f       	mul	r25, r21
+ 466:	c1 f3       	breq	.-16     	; 0x458 <__mulsf3+0x20>
+ 468:	95 0f       	add	r25, r21
+ 46a:	50 e0       	ldi	r21, 0x00	; 0
+ 46c:	55 1f       	adc	r21, r21
+ 46e:	62 9f       	mul	r22, r18
+ 470:	f0 01       	movw	r30, r0
+ 472:	72 9f       	mul	r23, r18
+ 474:	bb 27       	eor	r27, r27
+ 476:	f0 0d       	add	r31, r0
+ 478:	b1 1d       	adc	r27, r1
+ 47a:	63 9f       	mul	r22, r19
+ 47c:	aa 27       	eor	r26, r26
+ 47e:	f0 0d       	add	r31, r0
+ 480:	b1 1d       	adc	r27, r1
+ 482:	aa 1f       	adc	r26, r26
+ 484:	64 9f       	mul	r22, r20
+ 486:	66 27       	eor	r22, r22
+ 488:	b0 0d       	add	r27, r0
+ 48a:	a1 1d       	adc	r26, r1
+ 48c:	66 1f       	adc	r22, r22
+ 48e:	82 9f       	mul	r24, r18
+ 490:	22 27       	eor	r18, r18
+ 492:	b0 0d       	add	r27, r0
+ 494:	a1 1d       	adc	r26, r1
+ 496:	62 1f       	adc	r22, r18
+ 498:	73 9f       	mul	r23, r19
+ 49a:	b0 0d       	add	r27, r0
+ 49c:	a1 1d       	adc	r26, r1
+ 49e:	62 1f       	adc	r22, r18
+ 4a0:	83 9f       	mul	r24, r19
+ 4a2:	a0 0d       	add	r26, r0
+ 4a4:	61 1d       	adc	r22, r1
+ 4a6:	22 1f       	adc	r18, r18
+ 4a8:	74 9f       	mul	r23, r20
+ 4aa:	33 27       	eor	r19, r19
+ 4ac:	a0 0d       	add	r26, r0
+ 4ae:	61 1d       	adc	r22, r1
+ 4b0:	23 1f       	adc	r18, r19
+ 4b2:	84 9f       	mul	r24, r20
+ 4b4:	60 0d       	add	r22, r0
+ 4b6:	21 1d       	adc	r18, r1
+ 4b8:	82 2f       	mov	r24, r18
+ 4ba:	76 2f       	mov	r23, r22
+ 4bc:	6a 2f       	mov	r22, r26
+ 4be:	11 24       	eor	r1, r1
+ 4c0:	9f 57       	subi	r25, 0x7F	; 127
+ 4c2:	50 40       	sbci	r21, 0x00	; 0
+ 4c4:	9a f0       	brmi	.+38     	; 0x4ec <__mulsf3_pse+0x88>
+ 4c6:	f1 f0       	breq	.+60     	; 0x504 <__mulsf3_pse+0xa0>
+ 4c8:	88 23       	and	r24, r24
+ 4ca:	4a f0       	brmi	.+18     	; 0x4de <__mulsf3_pse+0x7a>
+ 4cc:	ee 0f       	add	r30, r30
+ 4ce:	ff 1f       	adc	r31, r31
+ 4d0:	bb 1f       	adc	r27, r27
+ 4d2:	66 1f       	adc	r22, r22
+ 4d4:	77 1f       	adc	r23, r23
+ 4d6:	88 1f       	adc	r24, r24
+ 4d8:	91 50       	subi	r25, 0x01	; 1
+ 4da:	50 40       	sbci	r21, 0x00	; 0
+ 4dc:	a9 f7       	brne	.-22     	; 0x4c8 <__mulsf3_pse+0x64>
+ 4de:	9e 3f       	cpi	r25, 0xFE	; 254
+ 4e0:	51 05       	cpc	r21, r1
+ 4e2:	80 f0       	brcs	.+32     	; 0x504 <__mulsf3_pse+0xa0>
+ 4e4:	0c 94 89 02 	jmp	0x512	; 0x512 <__fp_inf>
+ 4e8:	0c 94 16 02 	jmp	0x42c	; 0x42c <__fp_szero>
+ 4ec:	5f 3f       	cpi	r21, 0xFF	; 255
+ 4ee:	e4 f3       	brlt	.-8      	; 0x4e8 <__mulsf3_pse+0x84>
+ 4f0:	98 3e       	cpi	r25, 0xE8	; 232
+ 4f2:	d4 f3       	brlt	.-12     	; 0x4e8 <__mulsf3_pse+0x84>
+ 4f4:	86 95       	lsr	r24
+ 4f6:	77 95       	ror	r23
+ 4f8:	67 95       	ror	r22
+ 4fa:	b7 95       	ror	r27
+ 4fc:	f7 95       	ror	r31
+ 4fe:	e7 95       	ror	r30
+ 500:	9f 5f       	subi	r25, 0xFF	; 255
+ 502:	c1 f7       	brne	.-16     	; 0x4f4 <__mulsf3_pse+0x90>
+ 504:	fe 2b       	or	r31, r30
+ 506:	88 0f       	add	r24, r24
+ 508:	91 1d       	adc	r25, r1
+ 50a:	96 95       	lsr	r25
+ 50c:	87 95       	ror	r24
+ 50e:	97 f9       	bld	r25, 7
+ 510:	08 95       	ret
+
+00000512 <__fp_inf>:
+ 512:	97 f9       	bld	r25, 7
+ 514:	9f 67       	ori	r25, 0x7F	; 127
+ 516:	80 e8       	ldi	r24, 0x80	; 128
+ 518:	70 e0       	ldi	r23, 0x00	; 0
+ 51a:	60 e0       	ldi	r22, 0x00	; 0
+ 51c:	08 95       	ret
+
+0000051e <__fp_nan>:
+ 51e:	9f ef       	ldi	r25, 0xFF	; 255
+ 520:	80 ec       	ldi	r24, 0xC0	; 192
+ 522:	08 95       	ret
+
+00000524 <__fp_pscA>:
+ 524:	00 24       	eor	r0, r0
+ 526:	0a 94       	dec	r0
+ 528:	16 16       	cp	r1, r22
+ 52a:	17 06       	cpc	r1, r23
+ 52c:	18 06       	cpc	r1, r24
+ 52e:	09 06       	cpc	r0, r25
+ 530:	08 95       	ret
+
+00000532 <__fp_pscB>:
+ 532:	00 24       	eor	r0, r0
+ 534:	0a 94       	dec	r0
+ 536:	12 16       	cp	r1, r18
+ 538:	13 06       	cpc	r1, r19
+ 53a:	14 06       	cpc	r1, r20
+ 53c:	05 06       	cpc	r0, r21
+ 53e:	08 95       	ret
+
+00000540 <__fp_round>:
+ 540:	09 2e       	mov	r0, r25
+ 542:	03 94       	inc	r0
+ 544:	00 0c       	add	r0, r0
+ 546:	11 f4       	brne	.+4      	; 0x54c <__fp_round+0xc>
+ 548:	88 23       	and	r24, r24
+ 54a:	52 f0       	brmi	.+20     	; 0x560 <__fp_round+0x20>
+ 54c:	bb 0f       	add	r27, r27
+ 54e:	40 f4       	brcc	.+16     	; 0x560 <__fp_round+0x20>
+ 550:	bf 2b       	or	r27, r31
+ 552:	11 f4       	brne	.+4      	; 0x558 <__fp_round+0x18>
+ 554:	60 ff       	sbrs	r22, 0
+ 556:	04 c0       	rjmp	.+8      	; 0x560 <__fp_round+0x20>
+ 558:	6f 5f       	subi	r22, 0xFF	; 255
+ 55a:	7f 4f       	sbci	r23, 0xFF	; 255
+ 55c:	8f 4f       	sbci	r24, 0xFF	; 255
+ 55e:	9f 4f       	sbci	r25, 0xFF	; 255
+ 560:	08 95       	ret
+
+00000562 <_exit>:
+ 562:	f8 94       	cli
+
+00000564 <__stop_program>:
+ 564:	ff cf       	rjmp	.-2      	; 0x564 <__stop_program>
